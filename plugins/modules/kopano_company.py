@@ -16,22 +16,26 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r'''
 ---
-module: kopano_public_store
+module: kopano_company
 
-short_description: Create a kopano public store
+short_description: Create a kopano company
 
 description:
-  - Create a kopano public store
+  - Create a kopano company
+
+References : 
+  - https://documentation.kopano.io/kopanocore_administrator_manual/special_kc_configurations.html#multi-tenancy-configurations
 
 author: Hugues Lepesant (@hlepesant)
-version_
+version: 0.1
 options:
 
 '''
 
 EXAMPLES = r'''
-- name: Create Kopano public store
-  community.kopano.kopano_public_store:
+- name: Create Kopano Company
+  community.kopano.kopano_company:
+    name: Zarafa
     state: present
 '''
 
@@ -54,6 +58,7 @@ def run_module():
 
   argument_spec = kopano_common_argument_spec()
   argument_spec.update(
+    name=dict(type='str', required=True),
     state=dict(type='str', default='present'),
   )
 
@@ -66,26 +71,30 @@ def run_module():
     module.fail_json(msg=missing_required_lib('kopano'),
       exception=E_IMP_ERR)
 
+  name = module.params['name']
+  state = module.params['state']
+
   try:
     kopano = KopanoHelpers(module)
     k = kopano.connect()
 
-    if k.multitenant:
-      module.exit_json(changed=False, msg="A public store can not be created in a multi tenant environment.".format(name))
+    if not k.multitenant:
+      module.exit_json(changed=False, msg="Unable to create company {0}: action not supported by server in single-tenancy support. ".format(name))
 
-    state = module.params['state']
+    _company = k.get_company(name)
 
-    _public_store = k.public_store
-
-    if (_public_store is None):
-      if state == "present":
-          k.create_public_store()
-          module.exit_json(changed=True, msg="The public store was created.")
+    if _company is None:
+      if state == 'present':
+        k.create_company(name)
+        module.exit_json(changed=True, msg="The company {0} was created.".format(name))
+      else:
+        module.exit_json(changed=False, msg="The company {0} do not exists.".format(name))
     else:
-      module.exit_json(changed=False, msg="The public store already exists.")
-
-    if state == "absent":
-      module.fail_json(msg="The public store can not be deleted.")
+      if state == 'absent':
+        k.delete(_company)
+        module.exit_json(changed=True, msg="The company {0} was deleted.".format(name))
+      else:
+        module.exit_json(changed=False, msg="The company {0} already exists.".format(name))
 
   except Exception as excep:
     module.fail_json(msg='Kopano error: %s' % to_native(excep))
