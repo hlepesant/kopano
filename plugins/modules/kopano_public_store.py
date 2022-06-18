@@ -23,6 +23,9 @@ short_description: Create a kopano public store
 description:
   - Create a kopano public store
 
+references: 
+  - https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#public-folder
+
 author: Hugues Lepesant (@hlepesant)
 version_
 options:

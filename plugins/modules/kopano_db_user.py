@@ -18,13 +18,13 @@ DOCUMENTATION = r'''
 ---
 module: kopano_company
 
-short_description: Create a kopano company
+short_description: Create a kopano user
 
 description:
-  - Create a kopano company
+  - Create a kopano user
 
 References : 
-  - https://documentation.kopano.io/kopanocore_administrator_manual/special_kc_configurations.html#multi-tenancy-configurations
+  - https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#users-management-with-db-plugin
 
 author: Hugues Lepesant (@hlepesant)
 version: 0.1
@@ -33,9 +33,13 @@ options:
 '''
 
 EXAMPLES = r'''
-- name: Create Kopano Company
-  community.kopano.kopano_company:
-    name: Zarafa
+- name: Create Kopano User
+  community.kopano.kopano_db_user:
+    username: john
+    password: ahTon1ohYo8u
+    email: john.doe@zarafa.com
+    fullname: John Doe
+    administrator: false
     state: present
 '''
 
@@ -58,7 +62,11 @@ def run_module():
 
   argument_spec = kopano_common_argument_spec()
   argument_spec.update(
-    name=dict(type='str', required=True),
+    username=dict(type='str', required=True),
+    password=dict(type='str', required=True, no_log=True),
+    email=dict(type='str', required=True),
+    fullname=dict(type='str', required=True),
+    administrator=dict(type='bool', required=False, default=False),
     state=dict(type='str', default='present'),
   )
 
@@ -71,31 +79,40 @@ def run_module():
     module.fail_json(msg=missing_required_lib('kopano'),
       exception=E_IMP_ERR)
 
-  name = module.params['name']
+  username = module.params['username']
+  password = module.params['password']
+  email = module.params['email']
+  fullname = module.params['fullname']
+  administrator = module.params['administrator']
   state = module.params['state']
+  create_store = True
 
   try:
     kopano = KopanoHelpers(module)
     k = kopano.connect()
 
     if not k.multitenant:
-      module.exit_json(changed=False, msg="Unable to create company {0}: action not supported by server in single-tenancy support. ".format(name))
-
-    _company = k.get_company(name)
-
-    if _company is None:
-      if state == 'present':
-        k.create_company(name)
-        module.exit_json(changed=True, msg="The company {0} was created.".format(name))
+      _admin_level = 0
+    else:
+      if administrator:
+        _admin_level = 1
       else:
-        module.exit_json(changed=False, msg="The company {0} does not exists.".format(name))
+        _admin_level = 0
+
+    _user = k.get_user(username)
+
+    if _user is None:
+      if state == 'present':
+        k.create_user(username, email, password, None, fullname, create_store)
+        module.exit_json(changed=True, msg="The user {0} was created.".format(username))
+      else:
+        module.exit_json(changed=False, msg="The user {0} does not exists.".format(username))
     else:
       if state == 'absent':
-        k.delete(_company)
-        # k.remove_company(name)
-        module.exit_json(changed=True, msg="The company {0} was deleted.".format(name))
+        k.delete(_user)
+        module.exit_json(changed=True, msg="The user {0} was deleted.".format(username))
       else:
-        module.exit_json(changed=False, msg="The company {0} already exists.".format(name))
+        module.exit_json(changed=False, msg="The user {0} already exists.".format(username))
 
   except Exception as excep:
     module.fail_json(msg='Kopano error: %s' % to_native(excep))
