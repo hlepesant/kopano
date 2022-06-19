@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2012, Mark Theunissen <mark.theunissen@gmail.com>
+# Copyright: (c) 2022, Hugues Lepesant <hugues@lepesant.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 
