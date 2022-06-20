@@ -109,7 +109,8 @@ def run_module():
         module.exit_json(changed=False, msg="The user {0} does not exists.".format(username))
     else:
       if state == 'absent':
-        k.delete(_user)
+        # k.delete(_user)
+        k.remove_user(_user)
         module.exit_json(changed=True, msg="The user {0} was deleted.".format(username))
       else:
         module.exit_json(changed=False, msg="The user {0} already exists.".format(username))
