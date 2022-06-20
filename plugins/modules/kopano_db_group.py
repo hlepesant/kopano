@@ -56,40 +56,65 @@ RETURN = '''#'''
 
 
 def get_group(name):
-    groups = k.groups()
+    try:
+        group = k.group(name, False)
+    except kopano.NotFoundError:
+        return None
+    return group
 
-    for group in groups:
-        if name == group.name:
-            return group
-
-    return None
-
-
-def set_group_send_as(group, users):
-    _sendas = group.send_as()
-    for sendas in _sendas:
-        group.remove_send_as(sendas)
-
-    for sendas in users:
-        user = k.get_user(sendas)
-        if user is not None:
-            group.add_send_as(user)
-
-    return
-
-
-def set_group_members(group, users):
-    _members = group.members(False, True)
+def db_group_members(group, target):
+    _change = False
+    _members = group.users()
+    mb = []
     for member in _members:
-        group.remove_user(member)
+       mb.append(member.name)
 
-    for member in users:
-        user = k.get_user(member)
+    mb.sort()
+    target.sort()
+
+    to_remove = list(set(mb) - set(target))
+    to_add = list(set(target) - set(mb))
+
+    for username in to_remove:
+        user = k.get_user(username)
+        if user is not None:
+            group.remove_user(user)
+            _change = True
+
+    for username in to_add:
+        user = k.get_user(username)
         if user is not None:
             group.add_user(user)
+            _change = True
 
-    return
+    return _change
 
+def db_group_send_as(group, target):
+    _change = False
+    _sendas = group.send_as()
+    sa = []
+    for sendas in _sendas:
+       sa.append(sendas.name)
+
+    sa.sort()
+    target.sort()
+
+    to_remove = list(set(sa) - set(target))
+    to_add = list(set(target) - set(sa))
+
+    for username in to_remove:
+        user = k.get_user(username)
+        if user is not None:
+            group.remove_send_as(user)
+            _change = True
+
+    for username in to_add:
+        user = k.get_user(username)
+        if user is not None:
+            group.add_send_as(user)
+            _change = True
+
+    return _change
 
 def run_module():
     global k
@@ -109,6 +134,14 @@ def run_module():
         argument_spec=argument_spec,
         supports_check_mode=True,
     )
+
+    result = dict(
+        changed=False,
+        original_message='',
+        message=''
+    )
+    result['original_message'] = module.params['name']
+    result['message'] = ""
 
     if not kopano_found:
         module.fail_json(msg=missing_required_lib('kopano'),
@@ -131,23 +164,28 @@ def run_module():
         if g is None:
             if state == "present":
                 k.create_group(name, fullname, email, hidden, None)
+                result['message'] += "The group {0} was created. ".format(name)
+                result['changed'] = True
 
-        else:
-            if state == "absent":
-                k.remove_group(g.name)
-                module.exit_json(
-                  changed=True, msg="The group {0} was deleted.".format(name))
+        if state == "absent":
+            k.remove_group(g.name)
+            result['message'] = "The group {0} was deleted.".format(name)
+            result['changed'] = True
+            module.exit_json(**result)
 
-        g = k.group(name)
+        # we need to refresh the group object
+        # g = get_group(name)
+        g = k.group(name, False)
 
-        if len(members):
-            set_group_members(g, members)
+        if ( db_group_members(g, members) ):
+            result['message'] += "Members of group {0} has changed. ".format(name)
+            result['changed'] = True
 
-        if len(send_as):
-            set_group_send_as(g, send_as)
+        if( db_group_send_as(g, send_as) ):
+            result['message'] += "SendAs of group {0} has changed.".format(name)
+            result['changed'] = True
 
-        module.exit_json(
-            changed=True, msg="The group {0} was created.".format(name))
+        module.exit_json(**result)
 
     except Exception as excep:
         module.fail_json(msg='Kopano error: %s' % to_native(excep))

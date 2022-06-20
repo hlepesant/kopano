@@ -24,9 +24,9 @@ def kopano_common_argument_spec():
   Returns a dict containing common options shared across the kopano modules
   """
   options = dict(
-    # server_socket=dict(type='str', default=None),
-    # sslkey_file=dict(type='str', default=None),
-    # sslkey_pass=dict(type='str', default=None),
+    server_socket=dict(type='str', default=None),
+    sslkey_file=dict(type='str', default=None),
+    sslkey_pass=dict(type='str', default=None),
     # config=dict(type='str', default=None),
     # auth_user=dict(type='str', default=None),
     # auth_pass=dict(type='str', default=None),
@@ -44,8 +44,8 @@ class KopanoHelpers():
     self.module = module
 
   def use_default_location(self, module):
-    # if module.params['server_socket'] is not None:
-    #   return False
+    if module.params['server_socket'] is not None:
+      return False
     return True
 
   def connect(self):
