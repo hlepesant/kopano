@@ -9,7 +9,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '0.1',
+    'metadata_version': '0.2',
     'status': ['preview'],
     'supported_by': 'community'
 }
@@ -35,7 +35,7 @@ options:
 EXAMPLES = r'''
 - name: Create Kopano User
   community.kopano.kopano_db_user:
-    username: john
+    name: john
     password: ahTon1ohYo8u
     email: john.doe@zarafa.com
     fullname: John Doe
@@ -60,63 +60,96 @@ from ansible_collections.community.kopano.plugins.module_utils.kopano_common imp
 
 def run_module():
 
-  argument_spec = kopano_common_argument_spec()
-  argument_spec.update(
-    username=dict(type='str', required=True),
-    password=dict(type='str', required=True, no_log=True),
-    email=dict(type='str', required=True),
-    fullname=dict(type='str', required=True),
-    administrator=dict(type='bool', required=False, default=False),
-    state=dict(type='str', default='present'),
-  )
+    argument_spec = kopano_common_argument_spec()
+    argument_spec.update(
+        name=dict(type='str', required=True),
+        email=dict(type='str', required=True),
+        password=dict(type='str', required=True, no_log=True),
+        company=dict(type='str', required=False, default=None),
+        fullname=dict(type='str', required=True),
+        administrator=dict(type='bool', required=False, default=False),
+        update_password=dict(type='bool', required=False, default=False, no_log=True),
+        state=dict(type='str', default='present'),
+    )
 
-  module = AnsibleModule(
-    argument_spec=argument_spec,
-    supports_check_mode=True,
-  )
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+    )
 
-  if not kopano_found:
-    module.fail_json(msg=missing_required_lib('kopano'),
-      exception=E_IMP_ERR)
+    result = dict(
+        changed=False,
+        original_message='',
+        message=''
+    )
+    result['original_message'] = module.params['name']
+    result['message'] = ""
 
-  username = module.params['username']
-  password = module.params['password']
-  email = module.params['email']
-  fullname = module.params['fullname']
-  administrator = module.params['administrator']
-  state = module.params['state']
-  create_store = True
+    if not kopano_found:
+        module.fail_json(msg=missing_required_lib('kopano'), exception=E_IMP_ERR)
+    
+    name = module.params['name']
+    email = module.params['email']
+    password = module.params['password']
+    company = module.params['company']
+    fullname = module.params['fullname']
+    administrator = module.params['administrator']
+    update_password = module.params['update_password']
+    state = module.params['state']
 
-  try:
-    kopano = KopanoHelpers(module)
-    k = kopano.connect()
+    _admin_level = 0
+    _company = None
 
-    if not k.multitenant:
-      _admin_level = 0
-    else:
-      if administrator:
-        _admin_level = 1
-      else:
-        _admin_level = 0
+    try:
+        kopano = KopanoHelpers(module)
+        k = kopano.connect()
 
-    _user = k.get_user(username)
+        if k.multitenant and company is not None:
+            _company = k.get_company(company)
+        
+        if k.multitenant and administrator:
+            _admin_level = 1
+        
+        _user = k.get_user(name)
+        
+        if _user is None:
+            if state == 'present':
+                k.create_user(name, email, password, _company, fullname, True)
+                result['changed'] = True
+                result['message'] = "The user {0} was created.".format(name)
+            else:
+                result['changed'] = False
+                result['message'] = "The user {0} does not exists.".format(name)
+        
+            module.exit_json(**result)
 
-    if _user is None:
-      if state == 'present':
-        k.create_user(username, email, password, None, fullname, create_store)
-        module.exit_json(changed=True, msg="The user {0} was created.".format(username))
-      else:
-        module.exit_json(changed=False, msg="The user {0} does not exists.".format(username))
-    else:
-      if state == 'absent':
-        # k.delete(_user)
-        k.remove_user(_user)
-        module.exit_json(changed=True, msg="The user {0} was deleted.".format(username))
-      else:
-        module.exit_json(changed=False, msg="The user {0} already exists.".format(username))
-
-  except Exception as excep:
-    module.fail_json(msg='Kopano error: %s' % to_native(excep))
+        # user found
+        if state == 'absent':
+            k.remove_user(_user)
+            result['changed'] = True
+            result['message'] = "The user {0} was deleted.".format(name)
+        
+        else:
+        
+            if _user.email != email:
+                _user.email = email
+                result['changed'] = True
+                result['message'] += "The email for user {0} was udpated.".format(name)
+            
+            if _user.fullname != fullname:
+                _user.fullname = fullname
+                result['changed'] = True
+                result['message'] += "The fullname for user {0} was udpated.".format(name)
+            
+            if update_password:
+                _user.password = password
+                result['changed'] = True
+                result['message'] += "The password for user {0} was udpated.".format(name)
+            
+        module.exit_json(**result)
+    
+    except Exception as excep:
+        module.fail_json(msg='Kopano error: %s' % to_native(excep))
 
 
 def main():
