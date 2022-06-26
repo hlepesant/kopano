@@ -51,7 +51,7 @@ Parameters
                 </td>
                 <td>
                   Python-kopano will first look at the provided arguments to determine how and where to connect.<br \>
-                  If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.<<br \>
+                  If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.<br \>
                   If this also doesn’t exist, it will fall-back to the default UNIX socket.
                 </td>
             </tr>
