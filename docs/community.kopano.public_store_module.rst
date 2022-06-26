@@ -86,7 +86,7 @@ Parameters
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td>
                 <div class="ansibleOptionAnchor" id="parameter-"></div>
                 <b>state</b>
                 <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
