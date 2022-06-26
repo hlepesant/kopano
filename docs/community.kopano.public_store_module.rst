@@ -38,73 +38,73 @@ Parameters
             <th>Choices/<font color="blue">Defaults</font></th>
             <th width="100%">Comments</th>
         </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>server_socket</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                  <div>Python-kopano will first look at the provided arguments to determine how and where to connect.</div>
-                  <div>If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.</div>
-                  <div>If this also doesn’t exist, it will fall-back to the default UNIX socket.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>sslkey_file</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">path</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Path to the certificate file.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>sslkey_pass</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>A dictionary to modify the botocore configuration.</div>
-                        <div>Parameters can be found at <a href='https://botocore.amazonaws.com/v1/documentation/api/latest/reference/config.html#botocore.config.Config'>https://botocore.amazonaws.com/v1/documentation/api/latest/reference/config.html#botocore.config.Config</a>.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>state</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                    <li>absent</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Whether or not the zone should exist or not.</div>
-                </td>
-            </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>server_socket</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div>Python-kopano will first look at the provided arguments to determine how and where to connect.</div>
+              <div>If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.</div>
+              <div>If this also doesn’t exist, it will fall-back to the default UNIX socket.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>sslkey_file</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">path</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                <div>Path to the certificate file.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>sslkey_pass</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>The password used while creating the certificate.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>state</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                     / <span style="color: red">required</span>
+                </div>
+            </td>
+            <td>
+                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                <li>present</li>
+                    </ul>
+            </td>
+            <td>
+                    <div>Specifies the state of the public store.</div>
+                    <div style="font-size: small; color: darkgreen"><br/>aliases: command</div>
+            </td>
+        </tr>
     </table>
     <br/>
 
