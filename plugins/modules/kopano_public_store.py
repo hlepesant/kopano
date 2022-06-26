@@ -70,20 +70,23 @@ def run_module():
         original_message='',
         message=''
     )
-    result['original_message'] = module.params['name']
+
     result['message'] = ""
 
     if not kopano_found:
-        module.fail_json(msg=missing_required_lib('kopano'),
+        module.fail_json(change=False, msg=missing_required_lib('kopano'),
             exception=E_IMP_ERR)
 
     try:
         kopano = KopanoHelpers(module)
         k = kopano.connect()
+
+        if k.multitenant:
+            module.fail_json(change=False, "Kopano is not running a multi tenant environment.")
+
+        _public_store = k.public_store
         
         state = module.params['state']
-        
-        _public_store = k.public_store
         
         if (_public_store is None):
             if state == "present":

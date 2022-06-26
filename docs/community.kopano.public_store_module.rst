@@ -112,7 +112,8 @@ Notes
 -----
 
 .. note::
-   - 
+   - Public store need a single tenant configuration. So be sure to have set `enable_hosted_kopano = false`.
+   - Public store can't be deleted.
 
 
 

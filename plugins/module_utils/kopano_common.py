@@ -26,10 +26,10 @@ def kopano_common_argument_spec():
   options = dict(
     server_socket=dict(type='str', default=None),
     sslkey_file=dict(type='str', default=None),
-    sslkey_pass=dict(type='str', default=None),
+    sslkey_pass=dict(type='str', default=None, no_log=True),
     # config=dict(type='str', default=None),
     # auth_user=dict(type='str', default=None),
-    # auth_pass=dict(type='str', default=None),
+    # auth_pass=dict(type='str', default=None, no_log=True),
     # options=dict(type='str', default=None),
     # parse_args=dict(type='str', default=False),
   )
