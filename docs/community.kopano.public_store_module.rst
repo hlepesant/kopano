@@ -50,9 +50,9 @@ Parameters
                 <td>
                 </td>
                 <td>
-                  Python-kopano will first look at the provided arguments to determine how and where to connect.<br \>
-                  If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.<br \>
-                  If this also doesn’t exist, it will fall-back to the default UNIX socket.
+                  <div>Python-kopano will first look at the provided arguments to determine how and where to connect.</div>
+                  <div>If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.</div>
+                  <div>If this also doesn’t exist, it will fall-back to the default UNIX socket.</div>
                 </td>
             </tr>
             <tr>
@@ -67,8 +67,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The location of a CA Bundle to use when validating SSL certificates.</div>
-                        <div>Note: The CA Bundle is read &#x27;module&#x27; side and may need to be explicitly copied from the controller if not run locally.</div>
+                        <div>Path to the certificate file.</div>
                 </td>
             </tr>
             <tr>
