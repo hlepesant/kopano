@@ -5,10 +5,8 @@
 community.kopano.public_store
 **************************
 
-**create a public store**
+**Create a public store**
 
-
-Version added: 1.0.0
 
 .. contents::
    :local:
@@ -52,9 +50,9 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div><code>AWS access key</code>. If not set then the value of the <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_ACCESS_KEY</code> or <code>EC2_ACCESS_KEY</code> environment variable is used.</div>
-                        <div>The <em>aws_access_key</em> and <em>profile</em> options are mutually exclusive.</div>
-                        <div style="font-size: small; color: darkgreen"><br/>aliases: ec2_access_key, access_key</div>
+                  Python-kopano will first look at the provided arguments to determine how and where to connect.<br \>
+                  If there are no such arguments, it will try to get useful settings from /etc/kopano/admin.cfg.<<br \>
+                  If this also doesn’t exist, it will fall-back to the default UNIX socket.
                 </td>
             </tr>
             <tr>
