@@ -55,43 +55,53 @@ from ansible_collections.community.kopano.plugins.module_utils.kopano_common imp
 
 def run_module():
 
-  argument_spec = kopano_common_argument_spec()
-  argument_spec.update(
-    state=dict(type='str', default='present'),
-  )
+    argument_spec = kopano_common_argument_spec()
+    argument_spec.update(
+        state=dict(type='str', default='present'),
+    )
 
-  module = AnsibleModule(
-    argument_spec=argument_spec,
-    supports_check_mode=True,
-  )
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+    )
 
-  if not kopano_found:
-    module.fail_json(msg=missing_required_lib('kopano'),
-      exception=E_IMP_ERR)
+    result = dict(
+        changed=False,
+        original_message='',
+        message=''
+    )
+    result['original_message'] = module.params['name']
+    result['message'] = ""
 
-  try:
-    kopano = KopanoHelpers(module)
-    k = kopano.connect()
+    if not kopano_found:
+        module.fail_json(msg=missing_required_lib('kopano'),
+            exception=E_IMP_ERR)
 
-    if k.multitenant:
-      module.exit_json(changed=False, msg="A public store can not be created in a multi tenant environment.".format(name))
+    try:
+        kopano = KopanoHelpers(module)
+        k = kopano.connect()
+        
+        state = module.params['state']
+        
+        _public_store = k.public_store
+        
+        if (_public_store is None):
+            if state == "present":
+                k.create_public_store()
+                result['message'] += "The public store was created."
+                result['changed'] = True
+        else:
+            result['message'] += "The public store already exists."
+            result['changed'] = False
+        
+        if state == "absent":
+            result['message'] += "The public store can not be deleted."
+            result['changed'] = False
+    
+        module.exit_json(**result)
 
-    state = module.params['state']
-
-    _public_store = k.public_store
-
-    if (_public_store is None):
-      if state == "present":
-          k.create_public_store()
-          module.exit_json(changed=True, msg="The public store was created.")
-    else:
-      module.exit_json(changed=False, msg="The public store already exists.")
-
-    if state == "absent":
-      module.fail_json(msg="The public store can not be deleted.")
-
-  except Exception as excep:
-    module.fail_json(msg='Kopano error: %s' % to_native(excep))
+    except Exception as excep:
+        module.fail_json(msg='Kopano error: %s' % to_native(excep))
 
 
 def main():
