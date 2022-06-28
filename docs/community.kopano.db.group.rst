@@ -131,6 +131,21 @@ Parameters
             </td>
         </tr>
         <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>send_as</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>List of user that can send 'on behalf of' the group.</div>
+            </td>
+        </tr>
+        <tr>
             <td>
                 <div class="ansibleOptionAnchor" id="parameter-"></div>
                 <b>state</b>
