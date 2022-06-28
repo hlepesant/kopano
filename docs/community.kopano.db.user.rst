@@ -181,7 +181,7 @@ Parameters
                     </ul>
             </td>
             <td>
-                    <div>The company the user belong to.</div>
+                    <div>When a user is administrator, the user will be allowed to open all Kopano stores of any user.</div>
             </td>
         </tr>
         <tr>
@@ -227,10 +227,11 @@ Parameters
 
 
 Notes
------
+-a----
 
 .. note::
    - This module supports the DB plugin only.
+   - [Users management with DB plugin](https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#users-management-with-db-plugin)
 
 
 
