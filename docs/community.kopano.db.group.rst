@@ -174,6 +174,7 @@ Notes
 
 .. note::
    - This module supports the DB plugin only.
+   - `Creating groups with the DB plugin <https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#creating-groups-with-the-db-plugin>`_
 
 
 
