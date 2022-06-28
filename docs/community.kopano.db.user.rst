@@ -227,11 +227,11 @@ Parameters
 
 
 Notes
--a----
+-----
 
 .. note::
    - This module supports the DB plugin only.
-   - [Users management with DB plugin](https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#users-management-with-db-plugin)
+   - `Users management with DB plugin <https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#users-management-with-db-plugin>`_
 
 
 
