@@ -52,12 +52,11 @@ from ansible_collections.community.kopano.plugins.module_utils.kopano_common imp
     NotFoundError
 )
 
-
 def run_module():
 
     argument_spec = kopano_common_argument_spec()
     argument_spec.update(
-        state=dict(type='str', default='present'),
+        state=dict(type='str', required=False, default='present')
     )
 
     module = AnsibleModule(
@@ -70,22 +69,20 @@ def run_module():
         original_message='',
         message=''
     )
-
-    result['message'] = ""
+    result['message'] = ''
 
     if not kopano_found:
-        module.fail_json(change=False, msg=missing_required_lib('kopano'),
-            exception=E_IMP_ERR)
+        module.fail_json(msg=missing_required_lib('kopano'), exception=E_IMP_ERR)
+
 
     try:
         kopano = KopanoHelpers(module)
         k = kopano.connect()
 
         if k.multitenant:
-            module.fail_json(change=False, "Kopano is not running a multi tenant environment.")
+            module.fail_json(msg="Kopano is not running a multi tenant environment.")
 
         _public_store = k.public_store
-        
         state = module.params['state']
         
         if (_public_store is None):

@@ -125,9 +125,9 @@ def run_module():
         fullname=dict(type='str', required=False, default=''),
         email=dict(type='str', required=False, default=''),
         hidden=dict(type='bool', default=False),
-        state=dict(type='str', default='present'),
         members=dict(type='list', required=False, default=[]),
         send_as=dict(type='list', required=False, default=[]),
+        state=dict(type='str', required=False, default='present'),
     )
 
     module = AnsibleModule(

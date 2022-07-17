@@ -142,7 +142,7 @@ Parameters
             <td>
             </td>
             <td>
-                    <div>List of user that can send 'on behalf of' the group.</div>
+                    <div>Add a user to the list of the delegate being updated as a ‘send as’ user.</div>
             </td>
         </tr>
         <tr>

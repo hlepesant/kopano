@@ -57,8 +57,37 @@ from ansible_collections.community.kopano.plugins.module_utils.kopano_common imp
     NotFoundError
 )
 
+# Send AS
+def db_user_send_as(user, target):
+    _change = False
+    _sendas = user.send_as()
+    sa = []
+    for sendas in _sendas:
+       sa.append(sendas.name)
+
+    sa.sort()
+    target.sort()
+
+    to_remove = list(set(sa) - set(target))
+    to_add = list(set(target) - set(sa))
+
+    for username in to_remove:
+        _user = k.get_user(username)
+        if _user is not None:
+            user.remove_send_as(_user)
+            _change = True
+
+    for username in to_add:
+        _user = k.get_user(username)
+        if _user is not None:
+            user.add_send_as(_user)
+            _change = True
+
+    return _change
+
 
 def run_module():
+    global k
 
     argument_spec = kopano_common_argument_spec()
     argument_spec.update(
@@ -69,7 +98,8 @@ def run_module():
         fullname=dict(type='str', required=True),
         administrator=dict(type='bool', required=False, default=False),
         update_password=dict(type='bool', required=False, default=False, no_log=True),
-        state=dict(type='str', default='present'),
+        send_as=dict(type='list', required=False, default=[]),
+        state=dict(type='str', required=False, default='present'),
     )
 
     module = AnsibleModule(
@@ -95,6 +125,7 @@ def run_module():
     fullname = module.params['fullname']
     administrator = module.params['administrator']
     update_password = module.params['update_password']
+    send_as = module.params['send_as']
     state = module.params['state']
 
     _admin_level = 0
@@ -145,6 +176,10 @@ def run_module():
                 _user.password = password
                 result['changed'] = True
                 result['message'] += "The password for user {0} was udpated.".format(name)
+
+            if( db_user_send_as(_user, send_as) ):
+                result['message'] += "SendAs of user {0} has changed.".format(name)
+                result['changed'] = True
             
         module.exit_json(**result)
     
