@@ -1,11 +1,11 @@
-.. _community.kopano.company_module:
+.. _hlepesant.kopano.db_group_module:
 
 
 **************************
-community.kopano.company
+hlepesant.kopano.db_group
 **************************
 
-**Create a company**
+**Create a group**
 
 
 .. contents::
@@ -15,7 +15,7 @@ community.kopano.company
 
 Synopsis
 --------
-- Create a company.
+- Create a group.
 
 
 
@@ -25,7 +25,6 @@ The below requirements are needed on the host that executes this module.
 
 - python >= 3.6
 - python3-kopano >= 8.7.0
-- Mutli tenant kopano environment.
 
 
 Parameters
@@ -93,13 +92,57 @@ Parameters
                 <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
-                     / <span style="color: red">required</span>
                 </div>
             </td>
             <td>
             </td>
             <td>
-                    <div>The name of the company.</div>
+                    <div>The name of the group.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>email</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>The email of the group.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>members</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>The members of the group.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>send_as</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>Add a user to the list of the delegate being updated as a ‘send as’ user.</div>
             </td>
         </tr>
         <tr>
@@ -109,6 +152,7 @@ Parameters
                 <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
+                     / <span style="color: red">required</span>
                 </div>
             </td>
             <td>
@@ -118,7 +162,7 @@ Parameters
                     </ul>
             </td>
             <td>
-                    <div>Specifies the state of the company.</div>
+                    <div>Specifies the state of the group.</div>
             </td>
         </tr>
     </table>
@@ -129,7 +173,8 @@ Notes
 -----
 
 .. note::
-   - Company need a multi tenant configuration. So be sure to have set `enable_hosted_kopano = true`.
+   - This module supports the DB plugin only.
+   - `Creating groups with the DB plugin <https://documentation.kopano.io/kopanocore_administrator_manual/user_management.html#creating-groups-with-the-db-plugin>`_
 
 
 
@@ -138,9 +183,13 @@ Examples
 
 .. code-block:: yaml
 
-    - name: create a company
-      community.kopano.company:
-        name: Zarafa
+    - name: create a group
+      hlepesant.kopano.db_group:
+        name: Contact
+        email: contact@zarafa.com
+        members:
+            - john.doe
+            - jamy.avery
         state: present
 
 

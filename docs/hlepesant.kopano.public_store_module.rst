@@ -1,8 +1,8 @@
-.. _community.kopano.public_store_module:
+.. _hlepesant.kopano.public_store_module:
 
 
 **************************
-community.kopano.public_store
+hlepesant.kopano.public_store
 **************************
 
 **Create a public store**
@@ -123,7 +123,7 @@ Examples
 .. code-block:: yaml
 
     - name: create a public store
-      community.kopano.public_store:
+      hlepesant.kopano.public_store:
         state: present
 
 

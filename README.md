@@ -12,30 +12,30 @@ If you encounter abusive behavior violating the [Ansible Code of Conduct](https:
 
 ## Contributing
 
-The content of this collection is made by [people](https://github.com/hlepesant/community.kopano/blob/main/CONTRIBUTORS) just like you, a community of individuals collaborating on making the world better through developing automation software.
+The content of this collection is made by [people](https://github.com/hlepesant/kopano/blob/main/CONTRIBUTORS) just like you, a community of individuals collaborating on making the world better through developing automation software.
 
 We are actively accepting new contributors.
 
 Any kind of contribution is very welcome.
 
-You don't know how to start? Refer to our [contribution guide](https://github.com/hlepesant/community.kopano/blob/main/CONTRIBUTING.md)!
+You don't know how to start? Refer to our [contribution guide](https://github.com/hlepesant/kopano/blob/main/CONTRIBUTING.md)!
 
 ## Collection maintenance
 
-The current maintainers (contributors with `write` or higher access) are listed in the [MAINTAINERS](https://github.com/hlepesant/community.kopano/blob/main/MAINTAINERS) file. If you have questions or need help, feel free to mention them in the proposals.
+The current maintainers (contributors with `write` or higher access) are listed in the [MAINTAINERS](https://github.com/hlepesant/kopano/blob/main/MAINTAINERS) file. If you have questions or need help, feel free to mention them in the proposals.
 
-To learn how to maintain / become a maintainer of this collection, refer to the [Maintainer guidelines](https://github.com/hlepesant/community.kopano/blob/main/MAINTAINING.md).
+To learn how to maintain / become a maintainer of this collection, refer to the [Maintainer guidelines](https://github.com/hlepesant/kopano/blob/main/MAINTAINING.md).
 
 It is necessary for maintainers of this collection to be subscribed to:
 
 * The collection itself (the `Watch` button -> `All Activity` in the upper right corner of the repository's homepage).
-* The "Changes Impacting Collection Contributors and Maintainers" [issue](https://github.com/hlepesant/community.kopano/issues).
+* The "Changes Impacting Collection Contributors and Maintainers" [issue](https://github.com/hlepesant/kopano/issues).
 
 They also should be subscribed to Ansible's [The Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn).
 
 ## Communication
 
-Have a look to [CHANGELOG](https://github.com/hlepesant/community.kopano/blob/main/CHAGELOG.md).
+Have a look to [CHANGELOG](https://github.com/hlepesant/kopano/blob/main/CHAGELOG.md).
 
 For more information about communication, refer to the [Ansible Communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
 
@@ -75,7 +75,7 @@ The Kopano modules rely on a [python3-kopano](https://packages.debian.org/buster
 Before using the Kopano collection, you need to install it with the Ansible Galaxy CLI:
 
 ```bash
-ansible-galaxy collection install community.kopano
+ansible-galaxy collection install hlepesant.kopano
 ```
 
 You can also include it in a `requirements.yml` file and install it via `ansible-galaxy collection install -r requirements.yml`, using the format:
@@ -83,19 +83,19 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 ```yaml
 ---
 collections:
-  - name: community.kopano
+  - name: hlepesant.kopano
 ```
 
 Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically if you upgrade the Ansible package. To upgrade the collection to the latest available version, run the following command:
 
 ```bash
-ansible-galaxy collection install community.kopano --upgrade
+ansible-galaxy collection install hlepesant.kopano --upgrade
 ```
 
 You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax:
 
 ```bash
-ansible-galaxy collection install community.kopano:==2.0.0
+ansible-galaxy collection install hlepesant.kopano:==0.0.2
 ```
 
 See [Ansible Using collections](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html) for more details.

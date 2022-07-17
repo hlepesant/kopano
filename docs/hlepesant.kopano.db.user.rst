@@ -1,8 +1,8 @@
-.. _community.kopano.db_user_module:
+.. _hlepesant.kopano.db_user_module:
 
 
 **************************
-community.kopano.db_user
+hlepesant.kopano.db_user
 **************************
 
 **Create a user**
@@ -256,7 +256,7 @@ Examples
 .. code-block:: yaml
 
     - name: create a user
-      community.kopano.db_user:
+      hlepesant.kopano.db_user:
         name: john
         email: john@zarafa.com
         fullname: John Doe
