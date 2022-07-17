@@ -48,10 +48,10 @@ Every voice is important and every idea is valuable. If you have something on yo
 ## Included content
 
 - **Modules**:
-  - [kopano_public_store](https://docs.ansible.com/ansible/latest/collections/community/kopano/kopano_public_store.html)
-  - [kopano_company](https://docs.ansible.com/ansible/latest/collections/community/kopano/kopano_company.html)
-  - [kopano_db_user](https://docs.ansible.com/ansible/latest/collections/community/kopano/kopano_db_user.html)
-  - [kopano_db_group](https://docs.ansible.com/ansible/latest/collections/community/kopano/kopano_db_group.html)
+  - [kopano_public_store](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_public_store.html)
+  - [kopano_company](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_company.html)
+  - [kopano_db_user](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_db_user.html)
+  - [kopano_db_group](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_db_group.html)
 
 
 ## Tested with
