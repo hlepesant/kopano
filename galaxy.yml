@@ -1,0 +1,15 @@
+namespace: "hlepesant"
+name: "kopano"
+version: "0.0.1"
+readme: "README.md"
+authors:
+    - "Hugues Lepesant <hugues@lepesant.com>"
+license:
+    - "MIT"
+tags:
+    - mail
+    - collection
+repository: "https://github.com/hlepesant/community.kopano" 
+build_ignore:
+    - playbooks/sensitive
+    - '*.tar.gz'
