@@ -11,7 +11,7 @@ __metaclass__ = type
 ANSIBLE_METADATA = {
     'metadata_version': '0.2',
     'status': ['preview'],
-    'supported_by': 'community'
+    'supported_by': 'hlepesant'
 }
 
 DOCUMENTATION = r'''
@@ -34,12 +34,36 @@ options:
 
 EXAMPLES = r'''
 - name: Create Kopano User
-  community.kopano.kopano_db_user:
+  hlepesant.kopano.kopano_db_user:
     name: john
     password: ahTon1ohYo8u
     email: john.doe@zarafa.com
     fullname: John Doe
     administrator: false
+    state: present
+
+- name: Create Kopano User and overwrite quota
+  hlepesant.kopano.kopano_db_user:
+    name: axel
+    password: ahTon1erTo8u
+    email: axel.doe@zarafa.com
+    fullname: Axel Doe
+    administrator: false
+    quota_use_default: false
+    quota_hard: 200 mb
+    state: present
+
+- name: Create Kopano User and overwrite and set all quota
+  hlepesant.kopano.kopano_db_user:
+    name: axel
+    password: ahTon1erTo8u
+    email: axel.doe@zarafa.com
+    fullname: Axel Doe
+    administrator: false
+    quota_use_default: false
+    quota_hard: 200 mb
+    quota_soft: 195 mb
+    quota_warn: 190 mb
     state: present
 '''
 
@@ -48,13 +72,18 @@ RETURN = '''#'''
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native
 
-from ansible_collections.community.kopano.plugins.module_utils.kopano_common import (
+from ansible_collections.hlepesant.kopano.plugins.module_utils.kopano_common import (
     missing_required_lib,
     kopano_found,
     E_IMP_ERR,
     kopano_common_argument_spec,
     KopanoHelpers,
     NotFoundError
+)
+
+from kopano.utils import (
+    bytes_to_human,
+    human_to_bytes
 )
 
 # Send AS
@@ -85,6 +114,50 @@ def db_user_send_as(user, target):
 
     return _change
 
+# Quotas
+def db_user_quota(user, quota_use_default, quota_hard, quota_soft = None, quota_warn = None):
+
+    _change = False
+    soft_factor = 0.95
+    warn_factor = 0.90
+
+    if user.quota.use_default and quota_use_default:
+        _change = False
+
+    if not user.quota.use_default and quota_use_default:
+        user.quota.update(
+            use_default = True
+        )
+        _change = True
+
+    if not quota_use_default:
+        # hard quota (must be defined)
+        quota_hard_b = human_to_bytes(quota_hard)
+
+        # soft quota
+        if quota_soft is None:
+            quota_soft = bytes_to_human(quota_hard_b * soft_factor)
+     
+        quota_soft_b = human_to_bytes(quota_soft)
+
+        # warning quota
+        if quota_warn is None:
+            quota_warn = bytes_to_human(quota_hard_b * warn_factor)
+    
+        quota_warn_b = human_to_bytes(quota_warn)
+        
+        if quota_hard_b != user.quota.hard_limit or quota_soft_b != user.quota.soft_limit or quota_warn_b != user.quota.warning_limit:
+        
+            user.quota.update(
+                use_default   = False,
+                warning_limit = quota_warn_b,
+                soft_limit    = quota_soft_b,
+                hard_limit    = quota_hard_b,
+            )
+            _change = True
+
+    return _change
+
 
 def run_module():
     global k
@@ -99,12 +172,18 @@ def run_module():
         administrator=dict(type='bool', required=False, default=False),
         update_password=dict(type='bool', required=False, default=False, no_log=True),
         send_as=dict(type='list', required=False, default=[]),
+        quota_use_default=dict(type='bool', required=False, default=True),
+        quota_hard=dict(type='str', required=False, default=None),
+        quota_soft=dict(type='str', required=False, default=None),
+        quota_warn=dict(type='str', required=False, default=None),
         state=dict(type='str', required=False, default='present'),
     )
 
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
+        required_if=[('quota_use_default', False, ['quota_hard'])],
+        # required_together=[('quota_soft', 'quota_warn'])],
     )
 
     result = dict(
@@ -126,6 +205,10 @@ def run_module():
     administrator = module.params['administrator']
     update_password = module.params['update_password']
     send_as = module.params['send_as']
+    quota_use_default = module.params['quota_use_default']
+    quota_hard = module.params['quota_hard']
+    quota_soft = module.params['quota_soft']
+    quota_warn = module.params['quota_warn']
     state = module.params['state']
 
     _admin_level = 0
@@ -180,6 +263,15 @@ def run_module():
             if( db_user_send_as(_user, send_as) ):
                 result['message'] += "SendAs of user {0} has changed.".format(name)
                 result['changed'] = True
+
+            # quotas
+            quota_changed = False
+            quota_changed = db_user_quota(_user, quota_use_default, quota_hard, quota_soft, quota_warn)
+
+            if quota_changed:
+                result['message'] += "Quota configuration for user {0} has changed.".format(name)
+                result['changed'] = True
+
             
         module.exit_json(**result)
     

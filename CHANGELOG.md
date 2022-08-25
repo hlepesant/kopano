@@ -1,5 +1,11 @@
 # Kopano Collection for Ansible Changelog
 
+## v0.0.5
+ - Fix typo
+
+## v0.0.4
+ - Fix doc extension
+
 ## v0.0.3
  - Fix doc path
 

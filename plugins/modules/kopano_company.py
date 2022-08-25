@@ -11,7 +11,7 @@ __metaclass__ = type
 ANSIBLE_METADATA = {
     'metadata_version': '0.1',
     'status': ['preview'],
-    'supported_by': 'community'
+    'supported_by': 'hlepesant'
 }
 
 DOCUMENTATION = r'''
@@ -34,7 +34,7 @@ options:
 
 EXAMPLES = r'''
 - name: Create Kopano Company
-  community.kopano.kopano_company:
+  hlepesant.kopano.kopano_company:
     name: Zarafa
     state: present
 '''
@@ -44,7 +44,7 @@ RETURN = '''#'''
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native
 
-from ansible_collections.community.kopano.plugins.module_utils.kopano_common import (
+from ansible_collections.hlepesant.kopano.plugins.module_utils.kopano_common import (
     missing_required_lib,
     kopano_found,
     E_IMP_ERR,

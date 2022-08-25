@@ -1,6 +1,6 @@
 namespace: "hlepesant"
 name: "kopano"
-version: "0.0.3"
+version: "0.0.5"
 readme: "README.md"
 authors:
     - "Hugues Lepesant <hugues@lepesant.com>"

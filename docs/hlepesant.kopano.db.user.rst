@@ -219,6 +219,40 @@ Parameters
             </td>
         </tr>
         <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>quota_use_default</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                </div>
+            </td>
+            <td>
+                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                <li><div style="color: blue"><b>True</b>&nbsp;&larr;</div></li>
+                                <li>False</li>
+                    </ul>
+            </td>
+            <td>
+                    <div>Overwrite default quota.</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>quota_hard</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>Quota Hard level. In 'b', 'kb', 'mb', 'gb', 'tb', 'pb'.</div>
+            </td>
+        </tr>
+        <tr>
             <td>
                 <div class="ansibleOptionAnchor" id="parameter-"></div>
                 <b>state</b>

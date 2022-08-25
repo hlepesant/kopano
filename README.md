@@ -48,10 +48,10 @@ Every voice is important and every idea is valuable. If you have something on yo
 ## Included content
 
 - **Modules**:
-  - [kopano_public_store](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_public_store.html)
-  - [kopano_company](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_company.html)
-  - [kopano_db_user](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_db_user.html)
-  - [kopano_db_group](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano_db_group.html)
+  - [kopano_public_store](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano.public_store_module.rst)
+  - [kopano_company](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano.company.rst)
+  - [kopano_db_user](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano.db.user.rst)
+  - [kopano_db_group](https://github.com/hlepesant/kopano/blob/main/docs/hlepesant.kopano.db.group.rst)
 
 
 ## Tested with
