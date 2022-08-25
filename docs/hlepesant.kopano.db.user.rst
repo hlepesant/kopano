@@ -253,6 +253,24 @@ Parameters
             </td>
         </tr>
         <tr>
+            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-"></div>
+                <b>quota_soft</b>
+                <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                </div>
+            </td>
+            <td>
+            </td>
+            <td>
+                    <div>Quota Soft level. In 'b', 'kb', 'mb', 'gb', 'tb', 'pb'.<br />
+                    Must be lower than quota_hard.<br />
+                    If not defined, will be evaluate to 95% of quota_hard.
+                    </div>
+            </td>
+        </tr>
+        <tr>
             <td>
                 <div class="ansibleOptionAnchor" id="parameter-"></div>
                 <b>state</b>
